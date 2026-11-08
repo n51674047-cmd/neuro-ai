@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080910">
 <title>NEURO AI — Видеогенератор</title>
 
 <style>
@@ -10,64 +11,51 @@
 
 body{
  margin:0;
- padding:18px;
+ padding:20px;
  background:#080910;
- color:white;
+ color:#fff;
  font-family:Arial,sans-serif;
 }
 
 main{
- max-width:950px;
+ max-width:900px;
  margin:auto;
 }
 
 header{
- padding:15px 0;
+ padding:15px 0 25px;
 }
 
 h1{
- font-size:34px;
+ font-size:36px;
  margin:0;
+ letter-spacing:2px;
 }
 
-h1 span{
- color:#a855f7;
-}
+h1 span{color:#a855f7}
 
-.subtitle{
- color:#888;
-}
+.subtitle{color:#888}
 
 .card{
  background:#131520;
  border:1px solid #292c3d;
  border-radius:18px;
- padding:20px;
- margin:20px 0;
+ padding:22px;
+ margin:18px 0;
 }
 
-h2{
- margin-top:0;
-}
+h2{margin-top:0}
 
 p{
  color:#aaa;
  line-height:1.6;
 }
 
-iframe{
- width:100%;
- height:950px;
- border:0;
- border-radius:12px;
- background:#080910;
-}
-
 button,.link{
  display:block;
  width:100%;
- padding:15px;
- margin-top:13px;
+ padding:16px;
+ margin-top:14px;
  border:0;
  border-radius:11px;
  background:linear-gradient(100deg,#7138dc,#a855f7);
@@ -79,8 +67,20 @@ button,.link{
  cursor:pointer;
 }
 
-button:disabled{
- opacity:.5;
+button:disabled{opacity:.5}
+
+.secondary{
+ background:#242637;
+}
+
+.badge{
+ display:inline-block;
+ padding:7px 12px;
+ background:#29203d;
+ color:#c9a9ff;
+ border-radius:20px;
+ font-size:12px;
+ margin-bottom:12px;
 }
 
 input{
@@ -96,36 +96,29 @@ video{
  background:#000;
 }
 
+#status{
+ margin-top:15px;
+ color:#c4a5ff;
+ line-height:1.5;
+}
+
 small{
  color:#777;
  line-height:1.5;
 }
 
-#status{
- margin-top:15px;
- color:#c4a5ff;
-}
-
-.badge{
- display:inline-block;
- background:#27203b;
- color:#c9a9ff;
- padding:7px 11px;
- border-radius:20px;
- font-size:12px;
- margin-bottom:12px;
-}
-
 footer{
  text-align:center;
  color:#555;
- padding:25px;
+ padding:30px 0;
  font-size:12px;
 }
+
 </style>
 </head>
 
 <body>
+
 <main>
 
 <header>
@@ -135,52 +128,58 @@ footer{
 
 <section class="card">
 
-<div class="badge">НОВЫЙ ДВИЖОК LTX-2.5</div>
+<div class="badge">БЕСПЛАТНЫЙ ВИДЕОГЕНЕРАТОР</div>
 
-<h2>🎬 Генератор видео</h2>
+<h2>🎬 Создание видео</h2>
 
 <p>
-Создавай видео с помощью искусственного интеллекта.
-Описывай свою идею или загружай фотографию,
-которую хочешь оживить.
+Создавай видео по текстовому описанию
+или превращай фотографии в анимацию.
 </p>
 
-<iframe
-src="https://lightricks-ltx-2-5.hf.space"
-allow="clipboard-read; clipboard-write; fullscreen"
-loading="lazy">
-</iframe>
+<p>
+Возможности:
+<br>✦ Генерация видео по тексту
+<br>✦ Оживление фотографий
+<br>✦ Разные модели искусственного интеллекта
+<br>✦ Скачивание готового видео
+</p>
 
 <a
 class="link"
-href="https://huggingface.co/spaces/Lightricks/LTX-2.5"
-target="_blank">
-Открыть генератор отдельно ↗
+href="https://wan2.video/free-ai-video-generator"
+target="_blank"
+rel="noopener noreferrer">
+🚀 Открыть видеогенератор
 </a>
 
 <p>
 <small>
-Генерация выполняется на бесплатном общем GPU Hugging Face.
-Возможны очереди, ограничения и временная недоступность.
-Интерфейс самого генератора может отображаться на английском.
+Генерация выполняется на сторонних серверах.
+Бесплатная GPU-очередь может быть занята.
+Длительность и доступные модели зависят от выбранного сервиса.
+Не загружай личные или конфиденциальные фотографии.
 </small>
 </p>
 
 </section>
 
+
 <section class="card">
+
+<div class="badge">ИНСТРУМЕНТ NEURO AI</div>
 
 <h2>🎞️ Объединение видео</h2>
 
 <p>
-Загрузи несколько созданных видеофрагментов.
-NEURO AI попробует объединить их в один MP4.
+Загрузи от двух до четырёх готовых видеофрагментов.
+Мы объединим их в один MP4-файл.
 </p>
 
 <input
 id="files"
 type="file"
-accept="video/mp4,video/webm"
+accept="video/mp4"
 multiple>
 
 <button id="merge">
@@ -201,11 +200,28 @@ download="NEURO-AI-video.mp4">
 
 </section>
 
+
+<section class="card">
+
+<h2>💜 О NEURO AI</h2>
+
+<p>
+NEURO AI — пространство для создания изображений
+и видеороликов с помощью искусственного интеллекта.
+</p>
+
+<p>
+Создавай. Экспериментируй. Воплощай идеи.
+</p>
+
+</section>
+
 <footer>
 NEURO AI © 2026
 </footer>
 
 </main>
+
 
 <script type="module">
 
@@ -216,6 +232,7 @@ const preview = document.getElementById('preview');
 const download = document.getElementById('download');
 
 let ffmpeg;
+let currentURL;
 
 mergeButton.onclick = async () => {
 
@@ -227,7 +244,7 @@ mergeButton.onclick = async () => {
  }
 
  if(files.length > 4){
-  status.textContent = 'Максимум четыре видео за один раз.';
+  status.textContent = 'Можно выбрать максимум четыре видео.';
   return;
  }
 
@@ -240,11 +257,11 @@ mergeButton.onclick = async () => {
   status.textContent =
   'Загружаю инструменты обработки...';
 
-  const {FFmpeg} = await import(
+  const { FFmpeg } = await import(
    'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js'
   );
 
-  const {fetchFile,toBlobURL} = await import(
+  const { fetchFile, toBlobURL } = await import(
    'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js'
   );
 
@@ -258,12 +275,12 @@ mergeButton.onclick = async () => {
    await ffmpeg.load({
 
     coreURL: await toBlobURL(
-     base+'/ffmpeg-core.js',
+     base + '/ffmpeg-core.js',
      'text/javascript'
     ),
 
     wasmURL: await toBlobURL(
-     base+'/ffmpeg-core.wasm',
+     base + '/ffmpeg-core.wasm',
      'application/wasm'
     )
 
@@ -315,7 +332,7 @@ mergeButton.onclick = async () => {
   ]);
 
   status.textContent =
-  'Подготавливаю готовый файл...';
+  'Подготавливаю результат...';
 
   const data = await ffmpeg.readFile('result.mp4');
 
@@ -324,23 +341,27 @@ mergeButton.onclick = async () => {
    {type:'video/mp4'}
   );
 
-  const url = URL.createObjectURL(blob);
+  if(currentURL){
+   URL.revokeObjectURL(currentURL);
+  }
 
-  preview.src = url;
+  currentURL = URL.createObjectURL(blob);
+
+  preview.src = currentURL;
   preview.hidden = false;
 
-  download.href = url;
+  download.href = currentURL;
   download.hidden = false;
 
   status.textContent =
-  '✅ Готово! Видео успешно объединено.';
+  '✅ Видео успешно объединено!';
 
  }catch(error){
 
   console.error(error);
 
   status.textContent =
-  '❌ Ошибка обработки. Попробуй другие видео.';
+  '❌ Не удалось объединить видео. Попробуй MP4-файлы с одинаковым разрешением.';
 
  }finally{
 
