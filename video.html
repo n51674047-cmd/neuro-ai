@@ -2,34 +2,153 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NEURO AI — Video</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#08090d;color:white;font-family:Arial,sans-serif;padding:20px}
-header{max-width:900px;margin:20px auto}
-h1{font-size:34px;margin-bottom:5px}
+body{margin:0;background:#080910;color:#fff;font-family:Arial,sans-serif;padding:18px}
+main{max-width:850px;margin:auto}
+h1{font-size:32px}
 h1 span{color:#a855f7}
-p{color:#999;line-height:1.5}
-.card{max-width:900px;margin:25px auto;background:#11131b;border:1px solid #292b3a;border-radius:18px;padding:18px}
-iframe{width:100%;height:650px;border:0;border-radius:12px;background:#08090d}
-button{background:#8b5cf6;color:white;border:0;padding:15px 20px;border-radius:10px;font-size:15px;font-weight:bold;width:100%;margin-top:15px}
-a{color:inherit;text-decoration:none}
-.note{font-size:12px;color:#777}
+.card{background:#131520;border:1px solid #292c3d;border-radius:17px;padding:18px;margin:18px 0}
+p{color:#aaa;line-height:1.5}
+iframe{width:100%;height:650px;border:0;border-radius:12px;background:#080910}
+button,.link{display:block;width:100%;padding:14px;border:0;border-radius:10px;background:#914cff;color:white;font-size:15px;font-weight:bold;text-align:center;text-decoration:none;margin-top:12px}
+input{width:100%;margin-top:12px;color:white}
+video{width:100%;margin-top:15px;border-radius:12px}
+small{color:#888}
+#status{margin-top:15px;color:#c4a5ff}
 </style>
 </head>
 <body>
-<header>
+<main>
+
 <h1>NEURO <span>AI</span></h1>
-<p>Генерация видео с помощью искусственного интеллекта</p>
-</header>
+<p>Твоя студия искусственного интеллекта</p>
 
-<div class="card">
-<h2>🎬 AI Video Generator</h2>
-<p>Создавай видео по текстовому описанию или экспериментируй с оживлением изображений.</p>
+<section class="card">
+<h2>🎬 Генератор видео</h2>
+<p>Создавай видео по тексту или оживляй фотографии.</p>
 
-<iframe src="https://arpitkgoyal-ltx-2-5-demo.static.hf.space/index.html"
+<iframe
+src="https://arpitkgoyal-ltx-2-5-demo.static.hf.space/index.html"
 allow="clipboard-read; clipboard-write; fullscreen"
-loading="lazy"></iframe>
+loading="lazy">
+</iframe>
 
-<a href="https://arpitkgoyal-ltx-2-5-demo.static.h
+<a class="link"
+href="https://arpitkgoyal-ltx-2-5-demo.static.hf.space/index.html"
+target="_blank">
+Открыть генератор отдельно ↗
+</a>
+
+<p><small>Генерация работает через общедоступный GPU Hugging Face. Возможны очереди и ограничения.</small></p>
+</section>
+
+<section class="card">
+<h2>🎞️ Объединение видео</h2>
+<p>Загрузи несколько сгенерированных фрагментов — NEURO AI объединит их в один ролик.</p>
+
+<input id="files" type="file" accept="video/mp4,video/webm" multiple>
+
+<button id="merge">Объединить видео</button>
+<div id="status"></div>
+
+<video id="preview" controls hidden></video>
+<a id="download" class="link" hidden download="NEURO-AI-video.mp4">Скачать готовое видео</a>
+</section>
+
+</main>
+
+<script type="module">
+const filesInput = document.getElementById('files');
+const mergeButton = document.getElementById('merge');
+const status = document.getElementById('status');
+const preview = document.getElementById('preview');
+const download = document.getElementById('download');
+
+let ffmpeg;
+
+mergeButton.onclick = async () => {
+  const files = [...filesInput.files];
+
+  if (files.length < 2) {
+    status.textContent = 'Выбери минимум 2 видео.';
+    return;
+  }
+
+  if (files.length > 4) {
+    status.textContent = 'Можно загрузить максимум 4 видео.';
+    return;
+  }
+
+  try {
+    mergeButton.disabled = true;
+    status.textContent = 'Загружаю инструменты обработки...';
+
+    const { FFmpeg } = await import(
+      'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js'
+    );
+
+    const { fetchFile, toBlobURL } = await import(
+      'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js'
+    );
+
+    if (!ffmpeg) {
+      ffmpeg = new FFmpeg();
+
+      const base = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+
+      await ffmpeg.load({
+        coreURL: await toBlobURL(base + '/ffmpeg-core.js', 'text/javascript'),
+        wasmURL: await toBlobURL(base + '/ffmpeg-core.wasm', 'application/wasm')
+      });
+    }
+
+    status.textContent = 'Загружаю видео...';
+
+    const list = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const name = `clip${i}.mp4`;
+      await ffmpeg.writeFile(name, await fetchFile(files[i]));
+      list.push(`file '${name}'`);
+    }
+
+    await ffmpeg.writeFile('list.txt', list.join('\n'));
+
+    status.textContent = 'Объединяю фрагменты. Это может занять несколько минут...';
+
+    await ffmpeg.exec([
+      '-f','concat',
+      '-safe','0',
+      '-i','list.txt',
+      '-c:v','libx264',
+      '-preset','ultrafast',
+      '-crf','25',
+      '-c:a','aac',
+      '-movflags','+faststart',
+      'result.mp4'
+    ]);
+
+    const data = await ffmpeg.readFile('result.mp4');
+    const blob = new Blob([data.buffer], {type:'video/mp4'});
+    const url = URL.createObjectURL(blob);
+
+    preview.src = url;
+    preview.hidden = false;
+
+    download.href = url;
+    download.hidden = false;
+
+    status.textContent = 'Готово! Видео объединено.';
+  } catch (error) {
+    console.error(error);
+    status.textContent = 'Ошибка обработки. Попробуй другие видео или меньшее разрешение.';
+  } finally {
+    mergeButton.disabled = false;
+  }
+};
+</script>
+</body>
+</html>
