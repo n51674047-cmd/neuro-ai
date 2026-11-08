@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEURO AI — AI Video Studio</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#08090e;--panel:#11131d;--panel2:#171a27;
+--line:#25283a;--text:#f3f4ff;--muted:#888da5;
+--accent:#9166ff;--accent2:#45d6d0;
+}
+body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+header{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;background:#090a10ed;backdrop-filter:blur(15px);z-index:5}
+.logo{font-size:21px;font-weight:900;letter-spacing:2px}
+.logo span{color:var(--accent)}
+.status{font-size:11px;color:#70e0ad;background:#163126;padding:8px 12px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 68px)}
+aside{width:220px;border-right:1px solid var(--line);padding:24px 14px;flex-shrink:0}
+.nav-title{color:var(--muted);font-size:10px;letter-spacing:2px;margin:15px 10px}
+.nav{display:block;width:100%;text-align:left;background:none;color:#a2a6ba;border:0;padding:13px 12px;border-radius:10px;margin-bottom:5px;font-size:14px}
+.nav.active,.nav:hover{background:#211b39;color:white}
+.nav.active{border-left:3px solid var(--accent)}
+main{width:100%;max-width:1100px;margin:auto;padding:35px 30px}
+h1{font-size:32px;margin-bottom:9px}
+.subtitle{color:var(--muted);font-size:14px;margin-bottom:30px}
+.tabs{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px}
+.tab{border:1px solid var(--line);background:var(--panel);color:#aaaec0;padding:11px 16px;border-radius:9px}
+.tab.active{background:#282044;border-color:var(--accent);color:white}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px}
+.label{font-size:13px;font-weight:bold;margin-bottom:12px;display:block}
+textarea{width:100%;min-height:125px;background:#0b0d15;color:white;border:1px solid var(--line);border-radius:10px;padding:15px;resize:vertical;outline:none;line-height:1.6}
+textarea:focus,input:focus,select:focus{border-color:var(--accent)}
+textarea::placeholder{color:#666b80}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:17px}
+select,input[type="text"]{width:100%;background:#0b0d15;color:white;border:1px solid var(--line);padding:12px;border-radius:9px;outline:none}
+.upload{border:1px dashed #45415e;background:#0d0f18;border-radius:12px;padding:25px;text-align:center;color:var(--muted);cursor:pointer}
+.upload strong{display:block;color:white;margin-bottom:7px}
+.upload input{display:none}
+.preview{max-width:100%;max-height:220px;border-radius:10px;margin-top:12px;display:none}
+.generate{width:100%;padding:16px;border:0;border-radius:10px;background:linear-gradient(100deg,#8255f5,#a45cf5,#4d9cf5);color:white;font-weight:bold;font-size:15px;margin-top:18px}
+.generate:hover{filter:brightness(1.12)}
+.note{color:var(--muted);font-size:11px;line-height:1.6;margin-top:12px;text-align:center}
+.section-title{font-size:19px;margin:28px 0 15px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.card{background:var(--panel);border:1px solid var(--line);padding:17px;border-radius:13px}
+.card .icon{font-size:25px;margin-bottom:12px}
+.card h3{font-size:14px;margin-bottom:7px}
+.card p{color:var(--muted);font-size:12px;line-height:1.5}
+#message{display:none;background:#211b39;border:1px solid #59429b;padding:15px;border-radius:10px;margin-top:15px;font-size:13px;line-height:1.5}
+#history{display:none}
+.history-item{padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;font-size:13px}
+.empty{color:var(--muted);padding:25px;text-align:center;background:var(--panel);border-radius:12px}
+footer{text-align:center;color:#555a70;font-size:11px;padding:35px}
+@media(max-width:700px){
+header{padding:0 15px}
+.layout{display:block}
+aside{width:100%;border-right:0;border-bottom:1px solid var(--line);padding:10px;display:flex;overflow-x:auto;gap:5px}
+.nav-title{display:none}
+.nav{width:auto;white-space:nowrap;margin:0;padding:11px}
+main{padding:25px 15px}
+h1{font-size:27px}
+.row{grid-template-columns:1fr}
+.cards{grid-template-columns:1fr}
+.box{padding:16px}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">NEURO<span> AI</span></div>
+ <div class="status">● STUDIO ONLINE</div>
+</header>
+
+<div class="layout">
+<aside>
+ <div class="nav-title">WORKSPACE</div>
+ <button class="nav active" onclick="page('studio',this)">✦ AI Studio</button>
+ <button class="nav" onclick="page('history',this)">◷ История</button>
+ <button class="nav" onclick="page('models',this)">⬡ Модели</button>
+ <button class="nav" onclick="page('about',this)">ⓘ О проекте</button>
+</aside>
+
+<main>
+<section id="studio">
+ <h1>Создавай с помощью AI</h1>
+ <p class="subtitle">Твоя собственная студия искусственного интеллекта.</p>
+
+ <div class="tabs">
+  <button class="tab active" onclick="mode('text',this)">✦ Текст → Видео</button>
+  <button class="tab" onclick="mode('image',this)">▧ Фото → Видео</button>
+  <button class="tab" onclick="mode('picture',this)">◈ Изображение</button>
+ </div>
+
+ <div class="box">
+  <label class="label" for="prompt">Опиши, что хочешь создать</label>
+  <textarea id="prompt" placeholder="Например: реалистичный мотоцикл едет по ночному городу, кинематографичная камера, дождь, отражения неоновых огней..."></textarea>
+
+  <div id="uploadArea" style="display:none;margin-top:18px">
+   <label class="label">Исходное изображение</label>
+   <label class="upload">
+    <strong>＋ Загрузить изображение</strong>
+    Нажми, чтобы выбрать фотографию
+    <input type="file" id="file" accept="image/*" onchange="previewImage(event)">
+    <img id="preview" class="preview">
+   </label>
+  </div>
+
+  <div class="row">
+   <div>
+    <label class="label">Модель</label>
+    <select id="model">
+     <option>Wan 2.2</option>
+     <option>LTX-Video</option>
+     <option>Stable Diffusion</option>
+     <option>Другая модель (скоро)</option>
+    </select>
+   </div>
+   <div>
+    <label class="label">Формат</label>
+    <select id="ratio">
+     <option>9:16 — Вертикальный</option>
+     <option>16:9 — Горизонтальный</option>
+     <option>1:1 — Квадратный</option>
+    </select>
+   </div>
+   <div>
+    <label class="label">Длительность</label>
+    <select id="duration">
+     <option>5 секунд</option>
+     <option>10 секунд</option>
+     <option>15 секунд</option>
+    </select>
+   </div>
+   <div>
+    <label class="label">Качество</label>
+    <select id="quality">
+     <option>Стандартное</option>
+     <option>Высокое</option>
+    </select>
+   </div>
+  </div>
+
+  <button class="generate" onclick="generate()">✦ СОЗДАТЬ С ПОМОЩЬЮ AI</button>
+  <div id="message"></div>
+  <p class="note">Генерация пока находится в разработке. Для запуска понадобится подключение AI-модели.</p>
+ </div>
+
+ <h2 class="section-title">Возможности NEURO AI</h2>
+ <div class="cards">
+  <div class="card"><div class="icon">🎬</div><h3>AI Video</h3><p>Создание видео по текстовому описанию.</p></div>
+  <div class="card"><div class="icon">🖼️</div><h3>Image to Video</h3><p>Оживление обычных изображений.</p></div>
+  <div class="card"><div class="icon">🎨</div><h3>AI Images</h3><p>Создание изображений по запросу.</p></div>
+  <div class="card"><div class="icon">🎙️</div><h3>AI Voice</h3><p>Генерация речи и озвучки.</p></div>
+  <div class="card"><div class="icon">🎵</div><h3>AI Music</h3><p>Музыка и звуковое сопровождение.</p></div>
+  <div class="card"><div class="icon">⚡</div><h3>Быстрая работа</h3><p>Удобная студия прямо в браузере.</p></div>
+ </div>
+</section>
+
+<section id="history" style="display:none">
+ <h1>История</h1>
+ <p class="subtitle">Твои последние запросы.</p>
+ <div id="historyList" class="empty">Здесь пока пусто.</div>
+</section>
+
+<section id="models" style="display:none">
+ <h1>AI-модели</h1>
+ <p class="subtitle">Модели, которые планируется подключить.</p>
+ <div class="cards">
+  <div class="card"><div class="icon">🎥</div><h3>Wan 2.2</h3><p>Модель для генерации видео.</p></div>
+  <div class="card"><div class="icon">⚡</div><h3>LTX-Video</h3><p>Модель для быстрого создания видео.</p></div>
+  <div class="card"><div class="icon">🎨</div><h3>Stable Diffusion</h3><p>Генерация изображений.</p></div>
+ </div>
+</section>
+
+<section id="about" style="display:none">
+ <h1>О NEURO AI</h1>
+ <p class="subtitle">Твоя собственная AI-платформа.</p>
+ <div class="box">
+  <h3 style="margin-bottom:12px">NEURO AI — Create without limits.</h3>
+  <p style="color:var(--muted);line-height:1.8;font-size:14px">
+   Проект объединяет инструменты искусственного интеллекта для создания видео, изображений, голоса и музыки.
+   Наша цель — собрать удобную студию с доступом к максимально возможному количеству бесплатных моделей.
+  </p>
+  <br>
+  <p style="color:var(--muted);font-size:12px">Версия 0.1.0 · В разработке</p>
+ </div>
+</section>
+
+<footer>NEURO AI © 2026 · AI CREATION STUDIO</footer>
+</main>
+</div>
+
+<script>
+let currentMode='text';
+
+function mode(m,btn){
+ currentMode=m;
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ btn.classList.add('active');
+ document.getElementById('uploadArea').style.display=m==='image'?'block':'none';
+ document.getElementById('duration').disabled=m==='picture';
+ document.getElementById('prompt').placeholder=
+ m==='text'?'Опиши видео, которое хочешь создать...':
+ m==='image'?'Опиши, как должно ожить изображение...':
+ 'Опиши изображение, которое хочешь создать...';
+}
+
+function page(id,btn){
+ ['studio','history','models','about'].forEach(x=>{
+ document.getElementById(x).style.display=x===id?'block':'none';
+ });
+ document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));
+ btn.classList.add('active');
+ if(id==='history')renderHistory();
+}
+
+function previewImage(event){
+ const file=event.target.files[0];
+ if(!file)return;
+ const preview=document.getElementById('preview');
+ preview.src=URL.createObjectURL(file);
+ preview.style.display='block';
+}
+
+function generate(){
+ const prompt=document.getElementById('prompt').value.trim();
+ const msg=document.getElementById('message');
+ msg.style.display='block';
+ if(!prompt){
+ msg.textContent='Сначала напиши описание того, что хочешь создать.';
+ return;
+ }
+ if(currentMode==='image'&&!document.getElementById('file').files.length){
+ msg.textContent='Сначала загрузи исходное изображение.';
+ return;
+ }
+ let history=JSON.parse(localStorage.getItem('neuroHistory')||'[]');
+ history.unshift({prompt,mode:currentMode,date:new Date().toLocaleString('ru-RU')});
+ localStorage.setItem('neuroHistory',JSON.stringify(history.slice(0,30)));
+ msg.textContent='Запрос сохранён! Интерфейс готов, но AI-генератор пока не подключён. Следующий этап — подключение настоящей модели.';
+}
+
+function renderHistory(){
+ const history=JSON.parse(localStorage.getItem('neuroHistory')||'[]');
+ const list=document.getElementById('historyList');
+ if(!history.length){list.className='empty';list.textContent='Здесь пока пусто.';return;}
+ list.className='';
+ list.innerHTML=history.map(x=>`<div class="history-item"><b>${escapeHTML(x.mode)}</b><p style="margin:9px 0;color:#b5b8ca">${escapeHTML(x.prompt)}</p><small style="color:#777">${escapeHTML(x.date)}</small></div>`).join('');
+}
+function escapeHTML(s){
+ return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+</script>
+</body>
+                                                               </html>
