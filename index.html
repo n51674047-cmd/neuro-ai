@@ -2,361 +2,50 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090a12">
 <title>NEURO AI</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#090a12;color:#f4f4ff;font-family:Arial,sans-serif}
-header{padding:20px 6%;border-bottom:1px solid #292d43;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:25px;font-weight:900;letter-spacing:2px}
-.logo span{color:#9870ff}
-.online{color:#67e6a0;font-size:12px}
-main{max-width:900px;margin:auto;padding:35px 18px}
-h1{font-size:32px;margin-bottom:8px}
-.sub{color:#999fb5;line-height:1.5}
-.box{background:#141725;border:1px solid #292d43;border-radius:17px;padding:20px;margin-top:25px}
-label{display:block;font-size:13px;font-weight:bold;margin:17px 0 9px}
+body{margin:0;background:#090a12;color:#f5f5ff;font-family:Arial,sans-serif}
+header{padding:20px;border-bottom:1px solid #292d43;font-size:24px;font-weight:bold;letter-spacing:2px}
+header span{color:#9870ff}
+main{max-width:850px;margin:auto;padding:30px 16px}
+h1{font-size:30px}
+.sub{color:#9298b0;line-height:1.5}
+.box{background:#141725;border:1px solid #292d43;border-radius:16px;padding:20px;margin-top:25px}
+label{display:block;margin:17px 0 9px;font-size:13px;font-weight:bold}
 textarea,select{width:100%;background:#090c16;color:white;border:1px solid #30354b;border-radius:10px;padding:13px;font-size:15px}
 textarea{height:130px;resize:vertical}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 button{cursor:pointer}
-.generate{width:100%;margin-top:22px;padding:16px;border:0;border-radius:11px;background:linear-gradient(100deg,#7955e9,#a15cf0,#438de8);color:white;font-weight:bold;font-size:15px}
+.generate{width:100%;margin-top:22px;padding:16px;border:0;border-radius:11px;background:linear-gradient(100deg,#7955e9,#a15cf0,#438de8);color:white;font-weight:bold}
 .generate:disabled{opacity:.5}
-#message{display:none;margin-top:18px;background:#211c37;border:1px solid #51417e;padding:14px;border-radius:10px;font-size:13px;line-height:1.6}
-#result{margin-top:20px}
-#result img{width:100%;max-width:650px;border-radius:12px;display:block;margin-top:15px}
-.download{display:inline-block;color:#c3aaff;margin:12px 0}
-nav{display:flex;gap:10px;margin-top:25px;flex-wrap:wrap}
+#status{display:none;margin-top:16px;padding:14px;border-radius:10px;background:#211c37;line-height:1.6;font-size:13px}
+#result img{width:100%;max-width:650px;border-radius:12px;margin-top:18px;display:block}
+a{color:#c3aaff}
+nav{display:flex;gap:10px;margin:20px 0}
 nav button{background:#191d2d;border:1px solid #30354b;color:white;padding:11px 15px;border-radius:9px}
 .page{display:none}
 .page.active{display:block}
 .card{background:#141725;border:1px solid #292d43;border-radius:13px;padding:17px;margin-top:12px}
 .small{color:#9298b0;font-size:12px;line-height:1.6}
-footer{text-align:center;color:#646b82;padding:35px;font-size:12px}
-@media(max-width:500px){h1{font-size:26px}.grid{grid-template-columns:1fr}main{padding:25px 13px}.box{padding:15px}}
+footer{text-align:center;color:#646b82;padding:30px;font-size:12px}
+@media(max-width:500px){.grid{grid-template-columns:1fr}main{padding:22px 13px}}
 </style>
 </head>
 <body>
 
-<header>
-<div class="logo">NEURO<span> AI</span></div>
-<div class="online">● ONLINE</div>
-</header>
+<header>NEURO<span> AI</span></header>
 
 <main>
 
 <nav>
-<button onclick="page('studio')">✦ Генератор</button>
-<button onclick="page('history')">◷ История</button>
-<button onclick="page('about')">ⓘ О проекте</button>
+<button onclick="openPage('studio')">✦ Генератор</button>
+<button onclick="openPage('history')">◷ История</button>
+<button onclick="openPage('about')">ⓘ О проекте</button>
 </nav>
 
 <section id="studio" class="page active">
-
 <h1>AI CREATIVE STUDIO</h1>
-<p class="sub">Создавай изображения с помощью искусственного интеллекта.</p>
-
-<div class="box">
-
-<label for="prompt">ОПИШИ СВОЮ ИДЕЮ</label>
-
-<textarea id="prompt" placeholder="Например: реалистичный чёрный эндуро-мотоцикл на горной дороге, кинематографичный свет, высокая детализация..."></textarea>
-
-<div class="grid">
-
-<div>
-<label for="size">РАЗМЕР</label>
-<select id="size">
-<option value="512">512 × 512</option>
-<option value="768">768 × 768</option>
-<option value="1024">1024 × 1024</option>
-</select>
-</div>
-
-<div>
-<label for="style">СТИЛЬ</label>
-<select id="style">
-<option value="">Автоматический</option>
-<option value="photorealistic, cinematic lighting">Фотореализм</option>
-<option value="anime illustration">Аниме</option>
-<option value="digital concept art">Digital art</option>
-<option value="high quality 3D render">3D</option>
-</select>
-</div>
-
-</div>
-
-<button class="generate" id="generateBtn" onclick="generateImage()">
-✦ СОЗДАТЬ ИЗОБРАЖЕНИЕ
-</button>
-
-<div id="message"></div>
-<div id="result"></div>
-
-<p class="small">
-Генерация работает через AI Horde — распределённую сеть добровольческих компьютеров. Бесплатно, но скорость зависит от очереди.
-</p>
-
-</div>
-</section>
-
-<section id="history" class="page">
-<h1>История генераций</h1>
-<p class="sub">Твои последние созданные изображения.</p>
-<div id="historyList"></div>
-</section>
-
-<section id="about" class="page">
-<h1>О NEURO AI</h1>
-<div class="card">
-<h3>NEURO AI — CREATE WITHOUT LIMITS</h3>
-<p class="sub">Наша собственная AI-платформа, которую мы постепенно развиваем.</p>
-<p>Сейчас подключаем генерацию изображений. Видеогенерацию будем добавлять следующим этапом.</p>
-</div>
-<div class="card">
-<h3>Технологии</h3>
-<p class="small">AI Horde · Stable Diffusion · GitHub Pages</p>
-</div>
-</section>
-
-</main>
-
-<footer>NEURO AI © 2026</footer>
-
-<script>
-const API="https://aihorde.net/api/v2";
-const KEY="0000000000";
-const CLIENT="NEURO-AI:0.2";
-
-let busy=false;
-
-function page(id){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- if(id==="history")showHistory();
-}
-
-function message(text){
- const el=document.getElementById("message");
- el.style.display="block";
- el.textContent=text;
-}
-
-async function generateImage(){
-
- if(busy)return;
-
- const prompt=document.getElementById("prompt").value.trim();
-
- if(!prompt){
-  message("Сначала напиши описание изображения.");
-  return;
- }
-
- busy=true;
-
- const btn=document.getElementById("generateBtn");
- btn.disabled=true;
- btn.textContent="⏳ ГЕНЕРАЦИЯ...";
- document.getElementById("result").innerHTML="";
-
- try{
-
-  const size=Number(document.getElementById("size").value);
-  const style=document.getElementById("style").value;
-  const fullPrompt=style?prompt+", "+style:prompt;
-
-  message("Отправляем запрос в AI Horde...");
-
-  const response=await fetch(API+"/generate/async",{
-   method:"POST",
-   headers:{
-    "Content-Type":"application/json",
-    "apikey":KEY,
-    "Client-Agent":CLIENT
-   },
-   body:JSON.stringify({
-    prompt:fullPrompt,
-    params:{
-     width:size,
-     height:size,
-     steps:25,
-     n:1
-    },
-    nsfw:false,
-    censor_nsfw:true,
-    shared:true,
-    r2:true
-   })
-  });
-
-  const data=await response.json();
-
-  if(!response.ok){
-   throw new Error(data.message||"Ошибка отправки запроса");
-  }
-
-  if(!data.id){
-   throw new Error("Сервис не вернул номер задачи");
-  }
-
-  message("Запрос принят! Ожидаем свободный компьютер...");
-
-  let finished=false;
-
-  for(let i=0;i<120;i++){
-
-   await new Promise(resolve=>setTimeout(resolve,5000));
-
-   const check=await fetch(API+"/generate/check/"+data.id,{
-    headers:{"Client-Agent":CLIENT}
-   });
-
-   if(!check.ok)continue;
-
-   const state=await check.json();
-
-   if(state.faulted){
-    throw new Error("Генерация завершилась с ошибкой");
-   }
-
-   if(state.done){
-    finished=true;
-    break;
-   }
-
-   message(
-    "Ожидаем генерацию...\n"+
-    "В очереди: "+(state.waiting||0)+
-    "\nОбрабатывается: "+(state.processing||0)
-   );
-  }
-
-  if(!finished){
-   throw new Error("Очередь слишком большая. Попробуй позже.");
-  }
-
-  message("Получаем готовое изображение...");
-
-  const finalResponse=await fetch(
-   API+"/generate/status/"+data.id
-  );
-
-  const finalData=await finalResponse.json();
-
-  if(!finalResponse.ok){
-   throw new Error("Не удалось получить результат");
-  }
-
-  const images=(finalData.generations||[])
-   .map(item=>item.img)
-   .filter(Boolean);
-
-  if(!images.length){
-   throw new Error("Изображение не получено");
-  }
-
-  const result=document.getElementById("result");
-
-  images.forEach((url,index)=>{
-
-   const img=document.createElement("img");
-   img.src=url;
-   img.alt="NEURO AI image";
-
-   const link=document.createElement("a");
-   link.href=url;
-   link.target="_blank";
-   link.rel="noopener";
-   link.className="download";
-   link.textContent="Открыть изображение "+(index+1);
-
-   result.appendChild(img);
-   result.appendChild(link);
-  });
-
-  saveHistory({
-   prompt:prompt,
-   images:images,
-   date:new Date().toLocaleString("ru-RU")
-  });
-
-  message("✓ Готово! Изображение создано.");
-
- }catch(error){
-
-  message("Ошибка: "+error.message);
-
- }finally{
-
-  busy=false;
-  btn.disabled=false;
-  btn.textContent="✦ СОЗДАТЬ ИЗОБРАЖЕНИЕ";
-
- }
-
-}
-
-function saveHistory(item){
-
- let history=JSON.parse(
-  localStorage.getItem("neuroHistory")||"[]"
- );
-
- history.unshift(item);
-
- localStorage.setItem(
-  "neuroHistory",
-  JSON.stringify(history.slice(0,20))
- );
-
-}
-
-function showHistory(){
-
- const list=document.getElementById("historyList");
-
- const history=JSON.parse(
-  localStorage.getItem("neuroHistory")||"[]"
- );
-
- list.innerHTML="";
-
- if(!history.length){
-  list.textContent="Пока нет генераций.";
-  return;
- }
-
- history.forEach(item=>{
-
-  const card=document.createElement("div");
-  card.className="card";
-
-  const title=document.createElement("p");
-  title.textContent=item.prompt;
-  card.appendChild(title);
-
-  (item.images||[]).forEach(url=>{
-
-   const img=document.createElement("img");
-   img.src=url;
-   img.style.cssText="width:100%;border-radius:10px;margin-top:10px";
-   card.appendChild(img);
-
-  });
-
-  const date=document.createElement("p");
-  date.className="small";
-  date.textContent=item.date;
-
-  card.appendChild(date);
-  list.appendChild(card);
-
- });
-
-}
-</script>
-
-</body>
-</html>
+<p class="sub
